@@ -1,3 +1,8 @@
+/*-- Autor....: Bruno Joaquim
+ *-- Data.....: 31/07/2025
+ *-- Objetivo.: Classe de manipulação de dados do objeto Produto 
+*/
+
 package repository;
 import model.Produto;
 import java.util.ArrayList;

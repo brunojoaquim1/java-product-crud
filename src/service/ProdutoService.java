@@ -1,4 +1,8 @@
-package ProdutoService;
+/*-- Autor....: Bruno Joaquim
+ *-- Data.....: 31/07/2025
+ *-- Objetivo.: Serviço correspondente as rotinas de produto 
+*/
+package service;
 
 import repository.ProdutoRepository;
 

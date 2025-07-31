@@ -1,3 +1,7 @@
+/*-- Autor....: Bruno Joaquim
+ *-- Data.....: 31/07/2025
+ *-- Objetivo.: Modelo da classe de produtos 
+*/
 package model;
 
 public class Produto {

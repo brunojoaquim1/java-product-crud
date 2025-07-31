@@ -1,7 +1,12 @@
-package Main;
+/*-- Autor....: Bruno Joaquim
+ *-- Data.....: 31/07/2025
+ *-- Objetivo.: Classe main correspondete ao acesso principal da aplicação 
+*/
+
+package view;
 
 import java.util.Scanner;
-import ProdutoService.ProdutoService;
+import service.ProdutoService;
 
 public class Main {
 
