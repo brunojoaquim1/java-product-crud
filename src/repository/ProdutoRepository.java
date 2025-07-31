@@ -2,14 +2,34 @@ package repository;
 import model.Produto;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+
+
 
 public class ProdutoRepository {
-    private final List<Produto> produtos = new ArrayList<>();
+    
+    private final String arquivo = "produtos.json";
+    private final Gson gson = new Gson();
+    private  List<Produto> produtos = new ArrayList<>();
+    
     private int proximoID = 1;
     
     public void salvar(String nome, double preco){
         Produto p = new Produto(proximoID++, nome, preco);
         produtos.add(p);
+        salvarNoArquivo();
+    }
+
+    public ProdutoRepository() {
+        carregarDoArquivo();
     }
     
     public List<Produto> listarTodos(){
@@ -22,6 +42,7 @@ public class ProdutoRepository {
     
     public void remover(int id){
         produtos.removeIf(p -> p.getId() == id);
+        salvarNoArquivo();
     }
     
     public boolean atualizar(int id, String nome, double preco){
@@ -29,8 +50,41 @@ public class ProdutoRepository {
         if (p == null) return false;
         p.setNome(nome);
         p.setPreco(preco);
+        salvarNoArquivo();
         return true;
     }
+    
+    private void carregarDoArquivo() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
+            StringBuilder json = new StringBuilder();
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                json.append(linha);
+            }
+            produtos = gson.fromJson(json.toString(), new TypeToken<List<Produto>>(){}.getType());
+            if (produtos == null) produtos = new ArrayList<>();
+
+            // Atualiza o próximo ID baseado no maior ID já salvo
+            proximoID = produtos.stream()
+                .mapToInt(Produto::getId)
+                .max()
+                .orElse(0) + 1;
+
+        } catch (IOException e) {
+            // Se o arquivo não existir ainda, tudo bem
+            produtos = new ArrayList<>();
+        }
+    }
+    
+    private void salvarNoArquivo() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
+        String json = gson.toJson(produtos);
+        writer.write(json);
+    } catch (IOException e) {
+        System.out.println("Erro ao salvar os dados: " + e.getMessage());
+    }
+}
+
     
     public boolean isVazio(){
         return produtos.isEmpty();
