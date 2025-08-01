@@ -7,8 +7,12 @@ package view;
 
 import java.util.Scanner;
 import service.ProdutoService;
+import java.sql.Connection;
+import database.Conexao;
+import java.sql.SQLException;
 
 public class Main {
+
 
     public static void main(String[] args) {
         ProdutoService service = new ProdutoService();
@@ -18,6 +22,12 @@ public class Main {
     public static void executarMenu(ProdutoService service) {
         Scanner sc = new Scanner(System.in);
         int opcao;
+        
+        try {
+            Conexao.initBanco();
+        } catch (SQLException e) {
+            System.out.println("Erro ao iniciar banco: " + e.getMessage());
+        }
 
         do {
             exibirMenu();
