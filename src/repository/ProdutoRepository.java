@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import database.Conexao;
+import database.databaseUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -109,7 +109,7 @@ public class ProdutoRepository {
     
     public void inserirDB(String nome, double preco){
         String sql = "INSERT INTO produtos (nome, preco) VALUES (?, ?)";
-        try (Connection conn = Conexao.conectar();
+        try (Connection conn = databaseUtil.conectar();
             PreparedStatement stmt = conn.prepareStatement(sql)){
             
             stmt.setString(1, nome);
@@ -125,7 +125,7 @@ public class ProdutoRepository {
         List<Produto> produtos = new ArrayList<>();
         String sql = "SELECT * FROM produtos";
 
-        try (Connection conn = Conexao.conectar();
+        try (Connection conn = databaseUtil.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -147,7 +147,7 @@ public class ProdutoRepository {
     public void atualizaDB(int id, String nome, double preco){
         String sql = "UPDATE produtos SET nome = ?, preco = ? WHERE id = ?";
 
-        try (Connection conn = Conexao.conectar();
+        try (Connection conn = databaseUtil.conectar();
             PreparedStatement stmt = conn.prepareStatement(sql)
                 ){
             
@@ -164,7 +164,7 @@ public class ProdutoRepository {
     
     public void deletaDB(int id){
         String sql = "DELETE FROM produtos WHERE id = ?";
-        try (Connection conn = Conexao.conectar();
+        try (Connection conn = databaseUtil.conectar();
             PreparedStatement stmt = conn.prepareStatement(sql)){
             
             stmt.setInt(1, id);
